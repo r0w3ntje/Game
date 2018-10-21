@@ -29,15 +29,13 @@ namespace r0w3ntje.MenuSystem
 
             EditorGUILayout.Space();
 
-            GUILayout.Label("Durations");
-
+            EditorGUILayout.BeginHorizontal();
             userInterfaceItem.transInDuration = EditorGUILayout.FloatField("Trans In Duration", userInterfaceItem.transInDuration);
             userInterfaceItem.transOutDuration = EditorGUILayout.FloatField("Trans Out Duration", userInterfaceItem.transOutDuration);
+            EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space();
-
-            GUILayout.Label("Animation Values");
-
+            
             switch (userInterfaceItem.animationType)
             {
                 case AnimationType.Color:
