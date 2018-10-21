@@ -35,7 +35,14 @@ namespace r0w3ntje.MenuSystem
             EditorGUILayout.EndHorizontal();
 
             EditorGUILayout.Space();
-            
+
+            EditorGUILayout.BeginHorizontal();
+            userInterfaceItem.transInDelay = EditorGUILayout.FloatField("Trans In Delay", userInterfaceItem.transInDelay);
+            userInterfaceItem.transOutDelay = EditorGUILayout.FloatField("Trans Out Delay", userInterfaceItem.transOutDelay);
+            EditorGUILayout.EndHorizontal();
+
+            EditorGUILayout.Space();
+
             switch (userInterfaceItem.animationType)
             {
                 case AnimationType.Color:
