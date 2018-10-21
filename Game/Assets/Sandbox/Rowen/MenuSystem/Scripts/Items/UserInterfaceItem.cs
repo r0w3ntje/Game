@@ -47,8 +47,8 @@ namespace r0w3ntje.MenuSystem
             switch (animationType)
             {
                 case AnimationType.Color:
-                    if (_animTrans == AnimTrans.In) GetComponent<Image>().DOBlendableColor(transInColor, _noAnim ? 0 : transInDuration);
-                    else if (_animTrans == AnimTrans.Out) GetComponent<Image>().DOBlendableColor(transOutColor, _noAnim ? 0 : transOutDuration);
+                    if (_animTrans == AnimTrans.In) GetComponent<Image>().DOColor(transInColor, _noAnim ? 0 : transInDuration);
+                    else if (_animTrans == AnimTrans.Out) GetComponent<Image>().DOColor(transOutColor, _noAnim ? 0 : transOutDuration);
                     break;
 
                 case AnimationType.Position:
