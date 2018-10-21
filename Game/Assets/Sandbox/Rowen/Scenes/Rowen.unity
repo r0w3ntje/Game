@@ -1164,7 +1164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemVisibleInWhatMenus: 
   visibleInAllMenus: 1
-  animationType: 0
+  animationType: 2
   transInDuration: 0
   transOutDuration: 0
   transInColor: {r: 0, g: 0, b: 0, a: 0}

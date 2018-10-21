@@ -6,93 +6,71 @@ using UnityEngine.UI;
 
 namespace r0w3ntje.MenuSystem
 {
-	public class UserInterfaceItem : MonoBehaviour
-	{
-		public List<MenuEnum> itemVisibleInWhatMenus;
-		[HideInInspector] public bool visibleInAllMenus;
+    public class UserInterfaceItem : MonoBehaviour
+    {
+        public List<MenuEnum> itemVisibleInWhatMenus;
+        [HideInInspector] public bool visibleInAllMenus;
 
-		[HideInInspector] public AnimationType animationType;
+        [HideInInspector] public AnimationType animationType;
 
-		[HideInInspector] public float transInDuration, transOutDuration;
+        [HideInInspector] public float transInDuration, transOutDuration;
 
-		[HideInInspector] public Color transInColor, transOutColor;
-		[HideInInspector] public Vector3 transInPosition, transOutPosition;
-		[HideInInspector] public Vector3 transInScale, transOutScale;
+        [HideInInspector] public Color transInColor, transOutColor;
+        [HideInInspector] public Vector3 transInPosition, transOutPosition;
+        [HideInInspector] public Vector3 transInScale, transOutScale;
 
-		private void Awake()
-		{
-			MenuEvent.OnMenuChange += Action;
-			Action(MenuEvent.currentMenu);
-		}
+        private void Awake()
+        {
+            MenuEvent.OnMenuChange += Action;
+            Action(MenuEvent.currentMenu, true);
+        }
 
-		private void Action(MenuEnum _menu)
-		{
-			if (visibleInAllMenus) return;
+        private void Action(MenuEnum _menu, bool _noAnim)
+        {
+            if (visibleInAllMenus) return;
 
-			if (MenuIsInList(_menu) == false)
-			{
-				TransOut();
-				return;
-			}
+            Animation(MenuIsInList(_menu) == false ? AnimTrans.Out : AnimTrans.In, _noAnim);
+        }
 
-			TransIn();
+        private bool MenuIsInList(MenuEnum _menu)
+        {
+            return itemVisibleInWhatMenus.Any(x => x == _menu);
+        }
 
-			Debug.Log("Action");
-		}
+        public void GoToMenu(int _menu)
+        {
+            MenuEvent.CallEvent((MenuEnum)_menu);
+        }
 
-		private bool MenuIsInList(MenuEnum _menu)
-		{
-			return itemVisibleInWhatMenus.Any(x => x == _menu);
-		}
+        private void Animation(AnimTrans _animTrans, bool _noAnim = false)
+        {
+            switch (animationType)
+            {
+                case AnimationType.Color:
+                    if (_animTrans == AnimTrans.In) GetComponent<Image>().DOBlendableColor(transInColor, _noAnim ? 0 : transInDuration);
+                    else if (_animTrans == AnimTrans.Out) GetComponent<Image>().DOBlendableColor(transOutColor, _noAnim ? 0 : transOutDuration);
+                    break;
 
-		public void GoToMenu(int _menu)
-		{
-			MenuEvent.CallEvent((MenuEnum)_menu);
-		}
+                case AnimationType.Position:
+                    if (_animTrans == AnimTrans.In) transform.DOMove(transInPosition, _noAnim ? 0 : transInDuration);
+                    else if (_animTrans == AnimTrans.Out) transform.DOMove(transOutPosition, _noAnim ? 0 : transOutDuration);
+                    break;
 
-		#region Animation
+                case AnimationType.Scale:
+                    if (_animTrans == AnimTrans.In) transform.DOScale(transInScale, _noAnim ? 0 : transInDuration);
+                    else if (_animTrans == AnimTrans.Out) transform.DOScale(transOutScale, _noAnim ? 0 : transOutDuration);
+                    break;
+            }
+        }
 
-		private void TransIn()
-		{
-			switch (animationType)
-			{
-				case AnimationType.Color:
-					GetComponent<Image>().DOBlendableColor(transInColor, transInDuration);
-					break;
+        private enum AnimTrans
+        {
+            In, Out
+        }
+    }
 
-				case AnimationType.Position:
-					transform.DOMove(transInPosition, transInDuration);
-					break;
-
-				case AnimationType.Scale:
-					transform.DOScale(transInScale, transInDuration);
-					break;
-			}
-		}
-
-		private void TransOut()
-		{
-			switch (animationType)
-			{
-				case AnimationType.Color:
-					GetComponent<Image>().DOBlendableColor(transOutColor, transOutDuration);
-					break;
-
-				case AnimationType.Position:
-					transform.DOMove(transOutPosition, transOutDuration);
-					break;
-
-				case AnimationType.Scale:
-					transform.DOScale(transOutScale, transOutDuration);
-					break;
-			}
-		}
-
-		#endregion
-	}
-
-	public enum AnimationType
-	{
-		Color, Position, Scale
-	}
+    public enum AnimationType
+    {
+        Color, Position, Scale
+    }
 }
